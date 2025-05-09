@@ -20,6 +20,20 @@ public interface IAppointmentRepository extends PagingAndSortingRepository<Appoi
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
             "AND (a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
     List<Appointment> findOverlappingByMedicalOffice(Integer medicalOfficeId, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId " +
+            "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
+            "AND (a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
+    List<Appointment> findOverlappingByDoctor(Long doctorId, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient.id = :patientId " +
+            "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
+            "AND DATE(a.appointmentDateTime) = :date " +
+            "AND ((a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60) " +
+            "OR (a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60 + INTERVAL '2 HOURS' > :startTime))")
+    List<Appointment> findOverlappingOrCloseByPatient(Long patientId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date);
+
+
     
 }
 
