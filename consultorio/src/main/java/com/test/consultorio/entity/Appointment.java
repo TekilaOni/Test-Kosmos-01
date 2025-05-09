@@ -35,6 +35,14 @@ public class Appointment {
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 
+    @Column(name = "duration", nullable = false)
+    @Builder.Default
+    private Integer duration = 30;
+
+    @Column(name = "status", length = 20, nullable = false)
+    @Builder.Default
+    private String status = "PENDIENTE";
+
     @Column(name = "enabled", nullable = false)
     @Builder.Default
     private Boolean enabled = true;

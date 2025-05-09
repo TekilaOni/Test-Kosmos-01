@@ -55,6 +55,8 @@ CREATE TABLE appointment (
     patient_id INT NOT NULL,
     medical_office_id INT NOT NULL,
     appointment_date TIMESTAMP NOT NULL,
+    duration INT NOT NULL DEFAULT 30,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE',
     enabled BOOLEAN NOT NULL,
     creator_user VARCHAR(30) NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -64,3 +66,31 @@ CREATE TABLE appointment (
     FOREIGN KEY (patient_id) REFERENCES patient(id),
     FOREIGN KEY (medical_office_id) REFERENCES medical_office(id)
 );
+
+
+INSERT INTO speciality (name, enabled, creator_user, creation_date) VALUES
+('Cardiología', TRUE, 'admin', NOW()),
+('Pediatría', TRUE, 'admin'),
+('Neurología', TRUE, 'admin'),
+('Ortopedia', TRUE, 'admin'),
+('Dermatología', TRUE, 'admin');
+
+
+INSERT INTO speciality (name, enabled, creator_user, creation_date) VALUES
+('Cardiología', TRUE, 'admin', NOW()),
+('Pediatría', TRUE, 'admin', NOW()),
+('Neurología', TRUE, 'admin', NOW()),
+('Ortopedia', TRUE, 'admin', NOW()),
+('Dermatología', TRUE, 'admin', NOW());
+
+INSERT INTO doctor (name, last_name, second_last_name, email, phone_number, speciality_id, enabled, creator_user, creation_date) VALUES
+('Juan', 'Pérez', 'Gómez', 'juan.perez@hospital.com', '555-0101', 1, TRUE, 'admin', NOW()),
+('María', 'López', 'Martínez', 'maria.lopez@hospital.com', '555-0102', 1, TRUE, 'admin', NOW()),
+('Carlos', 'García', 'Rodríguez', 'carlos.garcia@hospital.com', '555-0103', 2, TRUE, 'admin', NOW()),
+('Ana', 'Martínez', 'Sánchez', 'ana.martinez@hospital.com', '555-0104', 2, TRUE, 'admin', NOW()),
+('Luis', 'Hernández', 'Ramírez', 'luis.hernandez@hospital.com', '555-0105', 3, TRUE, 'admin', NOW()),
+('Sofía', 'González', 'Díaz', 'sofia.gonzalez@hospital.com', '555-0106', 3, TRUE, 'admin', NOW()),
+('Miguel', 'Torres', 'Vega', 'miguel.torres@hospital.com', '555-0107', 4, TRUE, 'admin', NOW()),
+('Laura', 'Ramírez', 'Cruz', 'laura.ramirez@hospital.com', '555-0108', 4, TRUE, 'admin', NOW()),
+('Diego', 'Sánchez', 'Moreno', 'diego.sanchez@hospital.com', '555-0109', 5, TRUE, 'admin', NOW()),
+('Elena', 'Vega', 'Rojas', 'elena.vega@hospital.com', '555-0110', 5, TRUE, 'admin', NOW());
