@@ -1,0 +1,14 @@
+server:
+  servlet:
+    context-path: /consultorio
+    application-display-name: consultorio
+  port: 8080
+
+spring:
+  application:
+    name: consultorio
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_SCHEMA:mera}?useUnicode=true&characterEncoding=utf8
+    username: ${DB_USERNAME:be_exponential}
+    password: ${DB_PASSWORD:beexponential}
