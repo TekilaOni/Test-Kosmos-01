@@ -4,6 +4,7 @@ import com.test.consultorio.entity.Appointment;
 import com.test.consultorio.entity.Doctor;
 import com.test.consultorio.entity.MedicalOffice;
 import com.test.consultorio.entity.Patient;
+import com.test.consultorio.exception.NotFoundException;
 import com.test.consultorio.model.Request.AppointmentRequest;
 import com.test.consultorio.repository.IAppointmentRepository;
 import com.test.consultorio.service.IAppointmentService;
@@ -94,5 +95,26 @@ public class AppointmentService implements IAppointmentService {
     public List<Appointment> findAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date) {
         return iAppointmentRepository.findByDoctorIdAndDate(doctorId, date);
     }
+
+    @Transactional
+    public void cancelAppointment(Integer appointmentId) {
+        Appointment appointment = iAppointmentRepository.findById(appointmentId)
+                .orElseThrow(()->new NotFoundException("CITA NO ENCONTRADA"));
+
+        if (!appointment.getStatus().equals("PENDIENTE")) {
+            throw new IllegalArgumentException("SOLO SE PUEDEN CANCELAR CITAS PENDIENTE.");
+        }
+
+        if (appointment.getAppointmentDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("NO SE PUEDEN CANCELAR CITAS PASADAS");
+        }
+
+        appointment.setStatus("CANCELADA");
+        appointment.setModificationDate(LocalDateTime.now());
+        appointment.setModificationUser("SECRETARIO");
+        iAppointmentRepository.save(appointment);
+    }
+
+    
 
 }
