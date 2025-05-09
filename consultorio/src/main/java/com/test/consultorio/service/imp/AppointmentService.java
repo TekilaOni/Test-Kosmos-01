@@ -12,6 +12,7 @@ import com.test.consultorio.service.IMedicalOfficeService;
 import com.test.consultorio.service.IPatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class AppointmentService implements IAppointmentService {
     private final IDoctorService iDoctorService;
     private final IMedicalOfficeService iMedicalOfficeService;
 
+    @Transactional
     public String createAppointment(AppointmentRequest request){
 
         Patient patient = iPatientService.findPatient(request.getPatientId());
@@ -73,6 +75,24 @@ public class AppointmentService implements IAppointmentService {
 
         iAppointmentRepository.save(cita);
         return "CITA CREADA";
+    }
+
+    public List<Appointment> findAppointmentsByDateRange(LocalDateTime start, LocalDateTime end) {
+        return iAppointmentRepository.findByAppointmentDateTimeBetweenAndEnabledTrue(start, end);
+    }
+
+    public List<Appointment> findAppointmentsByMedicalOffice(Integer medicalOfficeId) {
+        MedicalOffice medicalOffice = iMedicalOfficeService.findMedicalOffice(medicalOfficeId);
+        return iAppointmentRepository.findByMedicalOfficeAndEnabledTrue(medicalOffice);
+    }
+
+    public List<Appointment> findAppointmentsByDoctor(Integer doctorId) {
+        Doctor doctor = iDoctorService.findDoctor(doctorId);
+        return iAppointmentRepository.findByDoctorAndEnabledTrue(doctor);
+    }
+
+    public List<Appointment> findAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date) {
+        return iAppointmentRepository.findByDoctorIdAndDate(doctorId, date);
     }
 
 }

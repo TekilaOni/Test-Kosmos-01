@@ -1,12 +1,15 @@
 package com.test.consultorio.repository;
 
 import com.test.consultorio.entity.Appointment;
+import com.test.consultorio.entity.Doctor;
+import com.test.consultorio.entity.MedicalOffice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +40,17 @@ public interface IAppointmentRepository extends PagingAndSortingRepository<Appoi
             "AND a.enabled = true AND a.status NOT IN ('CANCELLED', 'COMPLETED') " +
             "AND DATE(a.appointmentDateTime) = :date")
     Integer countAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId " +
+            "AND a.enabled = true AND a.status NOT IN ('CANCELLED', 'COMPLETED') " +
+            "AND DATE(a.appointmentDateTime) = :date")
+    List<Appointment> findByDoctorIdAndDate(Integer doctorId, LocalDate date);
+
+    List<Appointment> findByAppointmentDateTimeBetweenAndEnabledTrue(LocalDateTime start, LocalDateTime end);
+
+    List<Appointment> findByMedicalOfficeAndEnabledTrue(MedicalOffice medicalOffice);
+
+    List<Appointment> findByDoctorAndEnabledTrue(Doctor doctor);
     
 }
 
