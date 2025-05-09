@@ -115,6 +115,62 @@ public class AppointmentService implements IAppointmentService {
         iAppointmentRepository.save(appointment);
     }
 
-    
+    @Transactional
+    public Appointment editAppointment(Integer appointmentId, AppointmentRequest request, String modifierUser) {
+        Appointment appointment = iAppointmentRepository.findById(appointmentId)
+                .orElseThrow(()->new NotFoundException("CITA NO ENCONTRADA"));
+
+        if (!appointment.getStatus().equals("PENDIENTE")) {
+            throw new IllegalArgumentException("Solo se pueden editar citas en estado PENDIENTE.");
+        }
+
+        if (appointment.getAppointmentDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("No se pueden editar citas ya pasadas");
+        }
+
+        Patient patient = iPatientService.findPatient(request.getPatientId());
+        Doctor doctor = iDoctorService.findDoctor(request.getDoctorId());
+        MedicalOffice medicalOffice = iMedicalOfficeService.findMedicalOffice(request.getMedicalOfficeId());
+
+        LocalDateTime startTime = request.getAppointmentDateTime();
+        LocalDateTime endTime = startTime.plusMinutes(request.getDurationMinutes());
+        LocalDate date = startTime.toLocalDate();
+
+        List<Appointment> overlappingOffice = iAppointmentRepository.findOverlappingByMedicalOffice(
+                request.getMedicalOfficeId(), startTime, endTime);
+        overlappingOffice.removeIf(a -> a.getId().equals(appointmentId));
+        if (!overlappingOffice.isEmpty()) {
+            throw new IllegalArgumentException("EL CONSULTORIO SE ENCUENTRA OCUPADO EN ESE HORARIO");
+        }
+
+        List<Appointment> overlappingDoctor = iAppointmentRepository.findOverlappingByDoctor(
+                request.getDoctorId(), startTime, endTime);
+        overlappingDoctor.removeIf(a -> a.getId().equals(appointmentId));
+        if (!overlappingDoctor.isEmpty()) {
+            throw new IllegalArgumentException("EL DOCTOR CUENTA CON UNA CITA EN ESE HORARIO");
+        }
+
+        List<Appointment> overlappingPatient = iAppointmentRepository.findOverlappingOrCloseByPatient(
+                request.getPatientId(), startTime, endTime, date);
+        overlappingPatient.removeIf(a -> a.getId().equals(appointmentId));
+        if (!overlappingPatient.isEmpty()) {
+            throw new IllegalArgumentException("EL PACIENTE YA TIENE CITA, O SU CITA SE ENCUENTRA A MENOS DE DOS HORAS DE OTRA CITA DEL PACIENTE");
+        }
+
+        long appointmentCount = iAppointmentRepository.countAppointmentsByDoctorAndDate(request.getDoctorId(), date);
+        if (appointmentCount > 8 || (appointmentCount == 8 && request.getDoctorId() != appointment.getDoctor().getId())) {
+            throw new IllegalArgumentException("EL DOCTOR YA CUENTA CON 8 CITAS ESTE DIA, NO SE PUEDE AGENDAR UNA MÁS");
+        }
+
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setMedicalOffice(medicalOffice);
+        appointment.setAppointmentDate(startTime);
+        appointment.setDuration(request.getDurationMinutes());
+        appointment.setModificationDate(LocalDateTime.now());
+        appointment.setModificationUser(modifierUser);
+
+        return iAppointmentRepository.save(appointment);
+    }
 
 }
