@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "f54a6d33-6b28-4413-809e-09a4644b67d4",
+		"name": "CONSULTORIO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20240310"
+	},
+	"item": [
+		{
+			"name": "Create appointment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientId\": 1,\r\n    \"doctorId\": 1,\r\n    \"medicalOfficeId\": 1,\r\n    \"appointmentDateTime\": \"2025-05-10T10:00:00\",\r\n    \"durationMinutes\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/consultorio/appointments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"consultorio",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "consult appointment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/consultorio/appointments/by-doctor/1/date?date=2025-05-10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"consultorio",
+						"appointments",
+						"by-doctor",
+						"1",
+						"date"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2025-05-10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Appointment",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/consultorio/appointments/1/cancel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"consultorio",
+						"appointments",
+						"1",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit appointment",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientId\": 1,\r\n    \"doctorId\": 1,\r\n    \"medicalOfficeId\": 1,\r\n    \"appointmentDateTime\": \"2025-05-10T10:00:00\",\r\n    \"durationMinutes\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/consultorio/appointments/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"consultorio",
+						"appointments",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
