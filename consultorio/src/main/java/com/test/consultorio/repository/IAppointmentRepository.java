@@ -33,6 +33,10 @@ public interface IAppointmentRepository extends PagingAndSortingRepository<Appoi
             "OR (a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60 + INTERVAL '2 HOURS' > :startTime))")
     List<Appointment> findOverlappingOrCloseByPatient(Integer patientId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date);
 
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.doctor.id = :doctorId " +
+            "AND a.enabled = true AND a.status NOT IN ('CANCELLED', 'COMPLETED') " +
+            "AND DATE(a.appointmentDateTime) = :date")
+    Integer countAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date);
     
 }
 

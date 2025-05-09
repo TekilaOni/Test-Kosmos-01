@@ -54,6 +54,14 @@ public class AppointmentService implements IAppointmentService {
             throw new IllegalArgumentException("EL PACIENTE YA TIENE CITA, O SU CITA SE ENCUENTRA A MENOS DE DOS HORAS DE OTRA CITA DEL PACIENTE");
         }
 
+        Integer citasDelDoctor = iAppointmentRepository.countAppointmentsByDoctorAndDate(doctor.getId(), date);
+        if (citasDelDoctor >= 8) {
+            throw new IllegalArgumentException("EL DOCTOR YA CUENTA CON 8 CITAS ESTE DIA, NO SE PUEDE AGENDAR UNA MÁS");
+        }
+
+        
+
+
     }
 
 }
