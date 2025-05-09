@@ -59,9 +59,20 @@ public class AppointmentService implements IAppointmentService {
             throw new IllegalArgumentException("EL DOCTOR YA CUENTA CON 8 CITAS ESTE DIA, NO SE PUEDE AGENDAR UNA MÁS");
         }
 
-        
+        Appointment cita = Appointment.builder()
+                .patient(patient)
+                .doctor(doctor)
+                .medicalOffice(medicalOffice)
+                .appointmentDate(startTime)
+                .duration(request.getDurationMinutes())
+                .status("PENDIENTE")
+                .enabled(true)
+                .creatorUser("SECRETARIO")
+                .creationDate(LocalDateTime.now())
+                .build();
 
-
+        iAppointmentRepository.save(cita);
+        return "CITA CREADA";
     }
 
 }
