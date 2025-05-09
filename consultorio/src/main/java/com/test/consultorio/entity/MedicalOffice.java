@@ -30,9 +30,6 @@ public class MedicalOffice {
     @Builder.Default
     private Boolean enabled = true;
 
-    @Column(name = "external_id", nullable = false)
-    private Integer externalId;
-
     @Column(name = "creator_user", length = 30, nullable = false)
     private String creatorUser;
 
