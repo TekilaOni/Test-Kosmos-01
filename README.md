@@ -16,6 +16,8 @@ Project created to make the kosmos test for job appliance
 
 2.- After this execute the db-migration project
 
+Before this step please wait at least 5 minutes in order to let the docker image of the database get ready
+
 3.- After the db-migration project is executed (when is running)
 execute the main project "consultorio"
 

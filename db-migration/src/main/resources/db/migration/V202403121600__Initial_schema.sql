@@ -50,7 +50,7 @@ CREATE TABLE medical_office (
 );
 
 CREATE TABLE appointment (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     doctor_id INT NOT NULL,
     patient_id INT NOT NULL,
     medical_office_id INT NOT NULL,
