@@ -12,7 +12,7 @@ CREATE TABLE doctor (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    second_last_name VARCHAR(50),
+    second_last_name VARCHAR(100),
     email VARCHAR(100) DEFAULT NULL,
     phone_number VARCHAR(20) DEFAULT NULL,
     speciality_id INT NOT NULL,
