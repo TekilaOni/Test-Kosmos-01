@@ -21,15 +21,15 @@ public class Appointment {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "speciality_id")
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "speciality_id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name = "speciality_id")
+    @JoinColumn(name = "medical_office_id")
     private MedicalOffice medicalOffice;
 
     @Column(name = "appointment_date")
