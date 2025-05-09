@@ -1,6 +1,8 @@
 package com.test.consultorio.service.imp;
 
 import com.test.consultorio.entity.Doctor;
+import com.test.consultorio.entity.Patient;
+import com.test.consultorio.exception.NotFoundException;
 import com.test.consultorio.model.response.DoctorResponse;
 import com.test.consultorio.repository.IDoctorRepository;
 import com.test.consultorio.service.IDoctorService;
@@ -31,5 +33,10 @@ public class DoctorService implements IDoctorService {
             response.add(doc);
         }
         return response;
+    }
+
+    public Doctor findDoctor(Integer id){
+        Doctor doctor = iDoctorRepository.findById(id).orElseThrow(()->new NotFoundException("DOCTOR NO ENCONTRADO"));
+        return doctor;
     }
 }
