@@ -21,32 +21,32 @@ public interface IAppointmentRepository extends PagingAndSortingRepository<Appoi
 
     @Query("SELECT a FROM Appointment a WHERE a.medicalOffice.id = :medicalOfficeId " +
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
-            "AND (a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
+            "AND (a.appointmentDate < :endTime AND :startTime < a.appointmentDate + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
     List<Appointment> findOverlappingByMedicalOffice(Integer medicalOfficeId, LocalDateTime startTime, LocalDateTime endTime);
 
     @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId " +
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
-            "AND (a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
+            "AND (a.appointmentDate < :endTime AND :startTime < a.appointmentDate + INTERVAL '1 SECOND' * a.durationMinutes * 60)")
     List<Appointment> findOverlappingByDoctor(Integer doctorId, LocalDateTime startTime, LocalDateTime endTime);
 
     @Query("SELECT a FROM Appointment a WHERE a.patient.id = :patientId " +
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
-            "AND DATE(a.appointmentDateTime) = :date " +
-            "AND ((a.appointmentDateTime < :endTime AND :startTime < a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60) " +
-            "OR (a.appointmentDateTime + INTERVAL '1 SECOND' * a.durationMinutes * 60 + INTERVAL '2 HOURS' > :startTime))")
+            "AND DATE(a.appointmentDate) = :date " +
+            "AND ((a.appointmentDate < :endTime AND :startTime < a.appointmentDate + INTERVAL '1 SECOND' * a.durationMinutes * 60) " +
+            "OR (a.appointmentDate + INTERVAL '1 SECOND' * a.durationMinutes * 60 + INTERVAL '2 HOURS' > :startTime))")
     List<Appointment> findOverlappingOrCloseByPatient(Integer patientId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date);
 
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.doctor.id = :doctorId " +
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
-            "AND DATE(a.appointmentDateTime) = :date")
+            "AND DATE(a.appointmentDate) = :date")
     Integer countAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date);
 
     @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId " +
             "AND a.enabled = true AND a.status NOT IN ('CANCELADA', 'COMPLETADA') " +
-            "AND DATE(a.appointmentDateTime) = :date")
+            "AND DATE(a.appointmentDate) = :date")
     List<Appointment> findByDoctorIdAndDate(Integer doctorId, LocalDate date);
 
-    List<Appointment> findByAppointmentDateTimeBetweenAndEnabledTrue(LocalDateTime start, LocalDateTime end);
+    List<Appointment> findByAppointmentDateBetweenAndEnabledTrue(LocalDateTime start, LocalDateTime end);
 
     List<Appointment> findByMedicalOfficeAndEnabledTrue(MedicalOffice medicalOffice);
 

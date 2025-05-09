@@ -14,5 +14,5 @@ public interface IAppointmentService {
     public List<Appointment> findAppointmentsByMedicalOffice(Integer medicalOfficeId);
     public List<Appointment> findAppointmentsByDoctor(Integer doctorId);public List<Appointment> findAppointmentsByDoctorAndDate(Integer doctorId, LocalDate date);
     public void cancelAppointment(Integer appointmentId);
-    public Appointment editAppointment(Integer appointmentId, AppointmentRequest request, String modifierUser);
+    public Appointment editAppointment(Integer appointmentId, AppointmentRequest request);
 }

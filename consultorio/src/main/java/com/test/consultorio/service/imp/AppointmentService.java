@@ -79,7 +79,7 @@ public class AppointmentService implements IAppointmentService {
     }
 
     public List<Appointment> findAppointmentsByDateRange(LocalDateTime start, LocalDateTime end) {
-        return iAppointmentRepository.findByAppointmentDateTimeBetweenAndEnabledTrue(start, end);
+        return iAppointmentRepository.findByAppointmentDateBetweenAndEnabledTrue(start, end);
     }
 
     public List<Appointment> findAppointmentsByMedicalOffice(Integer medicalOfficeId) {
@@ -116,7 +116,7 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Transactional
-    public Appointment editAppointment(Integer appointmentId, AppointmentRequest request, String modifierUser) {
+    public Appointment editAppointment(Integer appointmentId, AppointmentRequest request) {
         Appointment appointment = iAppointmentRepository.findById(appointmentId)
                 .orElseThrow(()->new NotFoundException("CITA NO ENCONTRADA"));
 
@@ -168,7 +168,7 @@ public class AppointmentService implements IAppointmentService {
         appointment.setAppointmentDate(startTime);
         appointment.setDuration(request.getDurationMinutes());
         appointment.setModificationDate(LocalDateTime.now());
-        appointment.setModificationUser(modifierUser);
+        appointment.setModificationUser("SECRETARIO");
 
         return iAppointmentRepository.save(appointment);
     }

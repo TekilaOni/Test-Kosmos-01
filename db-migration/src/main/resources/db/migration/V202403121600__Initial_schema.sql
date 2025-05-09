@@ -1,3 +1,4 @@
+
 CREATE TABLE speciality (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -67,13 +68,12 @@ CREATE TABLE appointment (
     FOREIGN KEY (medical_office_id) REFERENCES medical_office(id)
 );
 
-
 INSERT INTO speciality (name, enabled, creator_user, creation_date) VALUES
 ('Cardiología', TRUE, 'admin', NOW()),
-('Pediatría', TRUE, 'admin'),
-('Neurología', TRUE, 'admin'),
-('Ortopedia', TRUE, 'admin'),
-('Dermatología', TRUE, 'admin');
+('Pediatría', TRUE, 'admin',NOW()),
+('Neurología', TRUE, 'admin',NOW()),
+('Ortopedia', TRUE, 'admin',NOW()),
+('Dermatología', TRUE, 'admin',NOW());
 
 
 INSERT INTO speciality (name, enabled, creator_user, creation_date) VALUES
@@ -94,3 +94,18 @@ INSERT INTO doctor (name, last_name, second_last_name, email, phone_number, spec
 ('Laura', 'Ramírez', 'Cruz', 'laura.ramirez@hospital.com', '555-0108', 4, TRUE, 'admin', NOW()),
 ('Diego', 'Sánchez', 'Moreno', 'diego.sanchez@hospital.com', '555-0109', 5, TRUE, 'admin', NOW()),
 ('Elena', 'Vega', 'Rojas', 'elena.vega@hospital.com', '555-0110', 5, TRUE, 'admin', NOW());
+
+
+INSERT INTO patient (name, last_name, second_last_name, email, phone_number, enabled, creator_user, creation_date) VALUES
+('Lucía', 'Rodríguez', 'Gómez', 'lucia.rodriguez@correo.com', '555-0201', TRUE, 'admin', NOW()),
+('Pedro', 'Sánchez', 'López', 'pedro.sanchez@correo.com', '555-0202', TRUE, 'admin', NOW()),
+('Carmen', 'Gómez', 'Martínez', 'carmen.gomez@correo.com', '555-0203', TRUE, 'admin', NOW()),
+('Javier', 'Díaz', 'Pérez', 'javier.diaz@correo.com', '555-0204', TRUE, 'admin', NOW()),
+('Isabel', 'Moreno', 'Ramírez', 'isabel.moreno@correo.com', '555-0205', TRUE, 'admin', NOW());
+
+INSERT INTO medical_office (number, floor, enabled, creator_user, creation_date) VALUES
+(101, 1, TRUE, 'admin', NOW()),
+(102, 1, TRUE, 'admin', NOW()),
+(201, 2, TRUE, 'admin', NOW()),
+(202, 2, TRUE, 'admin', NOW()),
+(301, 3, TRUE, 'admin', NOW());
