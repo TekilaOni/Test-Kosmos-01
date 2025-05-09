@@ -1,0 +1,21 @@
+version: '3.9'
+
+networks:
+  test_network:
+    driver: bridge
+
+services:
+
+  test-db:
+    image: mysql:8.0
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: test
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - test_network

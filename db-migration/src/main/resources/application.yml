@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /db-migration
+    application-display-name: db-migration
+  port: 8081
+
+spring:
+  application:
+    name: db-migration
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_SCHEMA:test}?useUnicode=true&characterEncoding=utf8
+    username: ${DB_USERNAME:test}
+    password: ${DB_PASSWORD:test}
+  flyway:
+    user: test
+    password: test
+    baseline-on-migrate: true
+    table: schema_version
+    locations:
+      - classpath:db/migration
+    repairChecksum: false
+    enabled: true
